@@ -1,0 +1,162 @@
+/* -------------------- GLOBAL -------------------- */
+body {
+    background: #fff5f7;
+    font-family: 'Poppins', sans-serif;
+    color: #444;
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap');
+
+/* -------------------- HEADER -------------------- */
+.navbar {
+    background: white !important;
+    border-bottom: 2px solid #ffd6e0;
+    padding: 15px 40px;
+}
+
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+    color: #e48fb1 !important;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.navbar-nav .nav-link {
+    color: #555 !important;
+    font-weight: 500;
+    margin: 0 15px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ff8fb2 !important;
+}
+
+#main {
+    margin-top: 110px !important;
+}
+
+/* -------------------- MAIN CONTAINER -------------------- */
+.container {
+    background: transparent;
+    padding-top: 40px;
+}
+
+/* -------------------- SHOPIFY CARDS STYLE -------------------- */
+.card-shop {
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    border: 2px solid #ffe0ea;
+    transition: 0.3s ease;
+}
+
+.card-shop:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 6px 12px rgba(255, 167, 194, 0.3);
+}
+
+/* -------------------- BUTTON -------------------- */
+.btn-shop {
+    background: #ffc3d9;
+    border-radius: 40px;
+    padding: 12px 30px;
+    color: #8a526a;
+    border: none;
+    font-weight: 600;
+}
+
+.btn-shop:hover {
+    background: #ff8fb2;
+    color: white;
+}
+
+/* -------------------- FOOTER -------------------- */
+footer {
+    background: #ffe6ee !important;
+    border-top: 2px solid #ffd6e0;
+}
+
+footer .text-muted {
+    color: #8a526a !important;
+}
+
+
+/* ---------- PAGE WRAPPER (centered area) ---------- */
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* ---------- BIG CARD (Shopify style) ---------- */
+.page-card {
+    width: 100%;
+    max-width: 1100px; /* largeur totale de l'étiquette */
+    background: white;
+    border-radius: 25px;
+    padding: 40px 50px;
+    border: 2px solid #ffe0ea;
+    box-shadow: 0px 8px 20px rgba(255, 170, 190, 0.25);
+}
+
+
+/* Bandeau de notification rose pastel */
+.alert-rose {
+    background: #ffe6ee !important;
+    border: 2px solid #ffc9da !important;
+    color: #d45b8c !important;
+    font-weight: 600;
+    padding: 18px 25px !important;
+    border-radius: 15px !important;
+    font-size: 16px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0px 4px 12px rgba(255, 150, 180, 0.25);
+}
+
+.alert-rose::before {
+    content: "💗 ";
+}
+
+/* ==== Bulle rose = conteneur ==== */
+.bubble {
+    background: #fcd2e0;
+    padding: 25px;
+    border-radius: 40px;
+    width: 85%;
+    margin: 25px auto;
+    box-shadow: 0px 6px 15px rgba(255, 170, 190, 0.5),
+                inset 0px 2px 6px rgba(255, 255, 255, 0.8);
+    border: 3px solid #fff;
+    animation: fadeSlide .6s ease;
+}
+
+/* Décalage des bulles 1 sur 2 */
+.bubble:nth-child(even) {
+    margin-left: 10%;
+}
+.bubble:nth-child(odd) {
+    margin-left: 0%;
+}
+
+/* Titres des sections */
+.bubble h2, 
+.bubble h3 {
+    color: #c85a8b;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Table dans une bulle */
+.bubble table {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* Animation légère */
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
