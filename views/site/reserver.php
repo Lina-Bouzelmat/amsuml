@@ -13,7 +13,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Résultats de Recherche', 'url' =>
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-reserver">
-    <h1><?= Html::encode($this->title) ?></h1>
+<?php // <h1><?= Html::encode($this->title) ?></h1> 
+
 
     <?php if (Yii::$app->session->hasFlash('success')): ?>
         <div class="alert alert-success">
@@ -27,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     <?php endif; ?>
 
+    <div class="bubble">
     <h2>Détails du Voyage</h2>
     <?php if ($voyage): ?>
         <?= DetailView::widget([
@@ -54,6 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php else: ?>
         <p class="alert alert-warning">Voyage non trouvé.</p>
     <?php endif; ?>
+    </div>
 
     <?php if ($voyage && $voyage->nbplacedispo > 0): ?>
         <h3>Effectuer votre réservation</h3>
@@ -64,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'nbplaceresa')->textInput(['type' => 'number', 'min' => 1, 'max' => $voyage->nbplacedispo]) ?>
 
                     <div class="form-group">
-                        <?= Html::submitButton('Confirmer la réservation', ['class' => 'btn btn-primary', 'name' => 'reserve-button']) ?>
+                        <?= Html::submitButton('Confirmer la réservation', ['class' => 'btn-rose', 'name' => 'reserve-button']) ?>
                     </div>
 
                 <?php ActiveForm::end(); ?>

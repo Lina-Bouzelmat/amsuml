@@ -6,7 +6,7 @@ use Yii;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "fredouil.typevehicule".
+ * Modele correspondant à la table "fredouil.typevehicule".
  *
  * @property int $id
  * @property string|null $typev

@@ -12,6 +12,60 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+
+
+/**
+     * Action de test des modèles et de leurs relations.
+     * Récupère l'internaute 'Fourmi' et affiche ses voyages et réservations.
+     *
+     * @return string
+     */
+    public function actionTestModele()
+    {
+        Yii::$app->session->setFlash('flashMessage', 'Chargement des données de test');
+        // Utilisation de la nouvelle méthode pour récupérer l'internaute par son pseudo
+        $internaute = \app\models\Internaute::getUserByIdentifiant('Chien');
+
+        $voyagesProposes = [];
+        $reservationsEffectuees = [];
+        if ($internaute) {
+            // Si l'internaute a le permis, on cherche ses propositions de voyages
+            if ($internaute->permis) {
+                $voyagesProposes = $internaute->getVoyages()->with('trajet0', 'marqueVehicule', 'typeVehicule')->all();
+            }
+            // On cherche les réservations de cet internaute
+            $reservationsEffectuees = $internaute->getReservations()->with('voyage0.trajet0', 'voyage0.conducteur0')->all();
+        }
+
+        $testTrajet = \app\models\Trajet::getTrajet('Paris', 'Lyon');   // a tj
+        $testVoyagesByTrajet = null;                                          // a tj
+        if ($testTrajet) {
+            $testVoyagesByTrajet = \app\models\Voyage::getVoyagesByTrajetId($testTrajet->id);
+        }
+        $testReservations = null;                                             // a tej
+        if ($testVoyagesByTrajet) {
+            $testReservations = \app\models\Reservation::getReservationsByVoyageId(
+            2
+            );
+        }
+
+        $voyagesTrajetTest = \app\models\Voyage::getVoyagesByTrajetId($trajetTest->id ?? null);
+        if (!empty($voyagesProposes)) {
+            $resaTest = \app\models\Reservation::getReservationsByVoyageId($voyagesProposes[0]->id);
+        }
+
+        return $this->render('test-modele', [
+            'internaute' => $internaute,
+            'voyagesProposes' => $voyagesProposes,
+            'reservationsEffectuees' => $reservationsEffectuees,
+
+            // le teste des 4 fonction demandé
+            'testTrajet'               => $testTrajet,
+            'testVoyagesByTrajet'      => $testVoyagesByTrajet,
+            'testReservations'         => $testReservations,
+        ]);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -61,6 +115,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        Yii::$app->session->setFlash('flashMessage', 'Bienvenue sur CERICar');
         return $this->render('index');
     }
 
@@ -71,12 +126,14 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        Yii::$app->session->setFlash('flashMessage', 'Connexion requise pour acceder au fonctionnalites.');
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            Yii::$app->session->setFlash('flashMessage', 'Connexion réussie');
             return $this->goBack();
         }
 
@@ -93,6 +150,7 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        Yii::$app->session->setFlash('flashMessage', 'Vous êtes maintenant déconnecté.');
         Yii::$app->user->logout();
 
         return $this->goHome();
@@ -105,10 +163,12 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
+        Yii::$app->session->setFlash('flashMessage', 'Vous pouvez envoyer un message via le formulaire.');
+
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
+            Yii::$app->session->setFlash('flashMessage', 'Votre message a été envoyé.');
+            
             return $this->refresh();
         }
         return $this->render('contact', [
@@ -123,37 +183,8 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
+        Yii::$app->session->setFlash('flashMessage', 'Voici les informations sur l’application.');
         return $this->render('about');
-    }
-
-    /**
-     * Action de test des modèles et de leurs relations.
-     * Récupère l'internaute 'Fourmi' et affiche ses voyages et réservations.
-     *
-     * @return string
-     */
-    public function actionTestModele()
-    {
-        // Utilisation de la nouvelle méthode pour récupérer l'internaute par son pseudo
-        $internaute = \app\models\Internaute::getUserByIdentifiant('Loup');
-
-        $voyagesProposes = [];
-        $reservationsEffectuees = [];
-
-        if ($internaute) {
-            // Si l'internaute a le permis, on cherche ses propositions de voyages
-            if ($internaute->permis) {
-                $voyagesProposes = $internaute->getVoyages()->with('trajet0', 'marqueVehicule', 'typeVehicule')->all();
-            }
-            // On cherche les réservations de cet internaute
-            $reservationsEffectuees = $internaute->getReservations()->with('voyage0.trajet0', 'voyage0.conducteur0')->all();
-        }
-
-        return $this->render('test-modele', [
-            'internaute' => $internaute,
-            'voyagesProposes' => $voyagesProposes,
-            'reservationsEffectuees' => $reservationsEffectuees,
-        ]);
     }
 
     /**
@@ -161,11 +192,30 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionRecherche()
-    {
+    public function actionRecherche(){
+        
         $model = new \app\models\SearchForm();
-        Yii::$app->session->setFlash('rose', "Aucun voyage correspondant à la saisie");
-        Yii::$app->session->setFlash('rose', "Votre demande a été envoyée !");
+    
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            // Effectuer la recherche
+            $results = \app\models\Voyage::find()
+                ->joinWith('trajet0')
+                ->where(['depart' => $model->depart, 'arrivee' => $model->arrivee])
+                ->andWhere(['>=', 'nbplacedispo', $model->nbPersonnes])
+                ->all();
+
+                if (Yii::$app->request->isAjax) {
+                    return $this->renderAjax('resultats', [
+                        'results' => $results, 
+                        'searchModel' => $model,
+                    ]);
+                }
+                return $this->render('recherche', [
+                    'results' => $results,
+                    'model' => $model,
+                ]);
+        }
+
         return $this->render('recherche', [
             'model' => $model,
         ]);
@@ -183,16 +233,15 @@ class SiteController extends Controller
         $tgvResults = [];
         $walkingRoute = [];
 
-        if ($searchModel->load(Yii::$app->request->post()) && $searchModel->validate()) {
+        if ($model->load(Yii::$app->request->get()) && $model->validate()) {
             // Recherche de covoiturages
             $carpoolingResults = \app\models\Voyage::find()
                 ->joinWith('trajet0')
                 ->where([
                     'fredouil.trajet.depart' => $searchModel->depart,
                     'fredouil.trajet.arrivee' => $searchModel->arrivee,
+
                 ])
-                // Ajoutez une condition pour la date si nécessaire, en fonction de votre schéma de base de données
-                // ->andWhere(['DATE(heuredepart)' => $searchModel->date])
                 ->all();
 
             // Appel des services externes (faux)
@@ -200,6 +249,15 @@ class SiteController extends Controller
             $walkingRoute = \app\components\MarcheService::getWalkingRoute($searchModel->depart, $searchModel->arrivee);
         }
 
+        if (Yii::$app->request->isAjax) {
+        // Si la requête est Ajax, renvoyer les résultats partiels
+        return $this->renderPartial('resultats', [
+            'searchModel' => $searchModel,
+            'carpoolingResults' => $carpoolingResults,
+            'tgvResults' => $tgvResults,
+            'walkingRoute' => $walkingRoute,
+        ]);
+    }
         return $this->render('resultats', [
             'searchModel' => $searchModel,
             'carpoolingResults' => $carpoolingResults,
@@ -217,6 +275,8 @@ class SiteController extends Controller
      */
     public function actionReserver($id)
     {
+        Yii::$app->session->setFlash('flashMessage', 'Vous êtes sur la page de réservation.');
+
         $voyage = \app\models\Voyage::findOne($id);
         if ($voyage === null) {
             throw new \yii\web\NotFoundHttpException('Le voyage demandé n\'existe pas.');
@@ -276,6 +336,8 @@ class SiteController extends Controller
      */
     public function actionAjouterAvis($id)
     {
+        Yii::$app->session->setFlash('flashMessage', 'Ajoutez un avis pour ce voyage.');
+
         $voyage = \app\models\Voyage::findOne($id);
         if ($voyage === null) {
             throw new \yii\web\NotFoundHttpException('Le voyage demandé n\'existe pas.');
@@ -311,4 +373,16 @@ class SiteController extends Controller
             'voyage' => $voyage,
         ]);
     }
+
+    public function actionResultatsAjax()
+    {
+        Yii::$app->session->setFlash('flashMessage', 'resultat de votre recherche.');
+
+        return $this->renderPartial('resultats', [
+            'covs' => $covs,
+            'tgv' => $tgv,
+            'itineraire' => $itineraire,
+        ]);
+    }
+
 }

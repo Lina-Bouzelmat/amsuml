@@ -6,7 +6,7 @@ use Yii;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "fredouil.trajet".
+ * Modele correspondant à la table "fredouil.trajet".
  *
  * @property int $id
  * @property string|null $depart
@@ -51,7 +51,7 @@ class Trajet extends ActiveRecord
     }
 
     /**
-     * Gets query for [[Voyages]].
+     * Gets query pour [[Voyages]].
      *
      * @return \yii\db\ActiveQuery
      */

@@ -6,7 +6,7 @@ use Yii;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "fredouil.voyage".
+ * Modele correspondant à la table "fredouil.voyage".
  *
  * @property int $id
  * @property int|null $conducteur
@@ -21,7 +21,7 @@ use yii\db\ActiveRecord;
  *
  * @property Avis[] $avis
  * @property Internaute $conducteur0
- * @property MarqueVehicule $idmarquev0
+ * @property marqueVehicule $marqueVehicule
  * @property TypeVehicule $idtypev0
  * @property Reservation[] $reservations
  * @property Trajet $trajet0

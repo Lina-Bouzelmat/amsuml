@@ -11,7 +11,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        This is the About page. You may modify the following file to customize its content:
+        Bienvenue sur notre plateforme ! 
+Ce site a été imaginé pour offrir une interface simple, efficace et évolutive. 
+Développé avec Yii2, il pose les fondations d’un projet moderne qui pourra évoluer 
+vers des fonctionnalités avancées et personnalisées.
     </p>
 
     <code><?= __FILE__ ?></code>

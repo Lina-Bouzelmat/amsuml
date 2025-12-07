@@ -1,3 +1,6 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap');
+
 /* -------------------- GLOBAL -------------------- */
 body {
     background: #fff5f7;
@@ -5,8 +8,44 @@ body {
     color: #444;
 }
 
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap');
+#notification-banner {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 26px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 17px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.notification-hidden {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+.notification-box {
+    opacity: 1 !important;
+}
+
+/* Couleur info (violet pétant) */
+.notification-box.info {
+    background: linear-gradient(90deg, #c716d5, #8a00e0, #6456ff);
+}
+
+/* Couleur success */
+.notification-box.success {
+    background: linear-gradient(90deg, #66ddaa, #44c291);
+}
+
+/* Couleur error */
+.notification-box.error {
+    background: linear-gradient(90deg, #ff6b8a, #e43d5f);
+}
 
 /* -------------------- HEADER -------------------- */
 .navbar {
@@ -42,46 +81,6 @@ body {
     padding-top: 40px;
 }
 
-/* -------------------- SHOPIFY CARDS STYLE -------------------- */
-.card-shop {
-    background: white;
-    border-radius: 18px;
-    padding: 30px;
-    border: 2px solid #ffe0ea;
-    transition: 0.3s ease;
-}
-
-.card-shop:hover {
-    transform: translateY(-6px);
-    box-shadow: 0px 6px 12px rgba(255, 167, 194, 0.3);
-}
-
-/* -------------------- BUTTON -------------------- */
-.btn-shop {
-    background: #ffc3d9;
-    border-radius: 40px;
-    padding: 12px 30px;
-    color: #8a526a;
-    border: none;
-    font-weight: 600;
-}
-
-.btn-shop:hover {
-    background: #ff8fb2;
-    color: white;
-}
-
-/* -------------------- FOOTER -------------------- */
-footer {
-    background: #ffe6ee !important;
-    border-top: 2px solid #ffd6e0;
-}
-
-footer .text-muted {
-    color: #8a526a !important;
-}
-
-
 /* ---------- PAGE WRAPPER (centered area) ---------- */
 .page-wrapper {
     display: flex;
@@ -89,10 +88,10 @@ footer .text-muted {
     padding: 40px 20px;
 }
 
-/* ---------- BIG CARD (Shopify style) ---------- */
+/* ---------- CONTAINER CARD (étiquette principale) ---------- */
 .page-card {
     width: 100%;
-    max-width: 1100px; /* largeur totale de l'étiquette */
+    max-width: 1100px;
     background: white;
     border-radius: 25px;
     padding: 40px 50px;
@@ -100,8 +99,7 @@ footer .text-muted {
     box-shadow: 0px 8px 20px rgba(255, 170, 190, 0.25);
 }
 
-
-/* Bandeau de notification rose pastel */
+/* ---------- BANDEAU MESSAGE ROSE ---------- */
 .alert-rose {
     background: #ffe6ee !important;
     border: 2px solid #ffc9da !important;
@@ -115,11 +113,21 @@ footer .text-muted {
     box-shadow: 0px 4px 12px rgba(255, 150, 180, 0.25);
 }
 
-.alert-rose::before {
-    content: "💗 ";
+.alert-rouge {
+    background: #ffccd9 !important;              /* rose vif mais pas agressif */
+    border: 2px solid #ff3e76 !important;        /* rose FORT pour l'erreur */
+    color: #b0003a !important;                   /* texte bien visible */
+    font-weight: 700;
+    padding: 18px 25px !important;
+    border-radius: 15px !important;
+    font-size: 16px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0px 4px 12px rgba(255, 60, 110, 0.35); /* glow plus fort */
+}
 }
 
-/* ==== Bulle rose = conteneur ==== */
+/* ==== Bulle rose pour sections ==== */
 .bubble {
     background: #fcd2e0;
     padding: 25px;
@@ -133,27 +141,107 @@ footer .text-muted {
 }
 
 /* Décalage des bulles 1 sur 2 */
-.bubble:nth-child(even) {
-    margin-left: 10%;
-}
-.bubble:nth-child(odd) {
-    margin-left: 0%;
-}
+.bubble:nth-child(even) { margin-left: 10%; }
+.bubble:nth-child(odd) { margin-left: 0%; }
 
-/* Titres des sections */
-.bubble h2, 
+/* Titres */
+.bubble h1,
+.bubble h2,
 .bubble h3 {
     color: #c85a8b;
     font-weight: bold;
     margin-bottom: 15px;
 }
 
-/* Table dans une bulle */
-.bubble table {
-    background: white;
-    border-radius: 15px;
+/* -------------------- TABLEAU PERSONNALISÉ -------------------- */
+.table-lina {
+    width: 100%;
+    border-radius: 20px;
     overflow: hidden;
+    border: 2px solid #ffd6e8;
+    background: white;
+    box-shadow: 0px 6px 15px rgba(255, 150, 185, 0.20);
 }
+
+/* Header du tableau */
+.table-lina thead {
+    background: #ffe3ef;
+}
+
+.table-lina thead th {
+    padding: 14px;
+    font-weight: 600;
+    color: #c85a8b;
+    text-align: center;
+    border-bottom: 2px solid #ffd0e0;
+}
+
+/* Lignes alternées */
+.table-lina tbody tr:nth-child(odd) { background: #fff9fc; }
+.table-lina tbody tr:nth-child(even) { background: #fff3f8; }
+
+/* Cellules */
+.table-lina td {
+    padding: 12px;
+    text-align: center;
+    color: #444;
+    font-weight: 500;
+    border-bottom: 1px solid #ffe5f0;
+}
+
+.table-lina tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Hover */
+.table-lina tbody tr:hover {
+    background: #ffe9f2;
+    transition: 0.2s ease;
+}
+
+/* -------------------- BOUTONS PERSONNALISÉS -------------------- */
+.btn-rose {
+    background: #ffc7d9;
+    border: none;
+    padding: 8px 22px;
+    border-radius: 25px;
+    color: #7a3c55;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.btn-rose:hover {
+    background: #ff9fbd;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(255, 120, 160, 0.35);
+}
+
+.btn-vert {
+    background: #c6f5df;
+    border: none;
+    padding: 8px 22px;
+    border-radius: 25px;
+    color: #1e5f46;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.btn-vert:hover {
+    background: #a0eac8;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(120, 200, 165, 0.35);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.action-buttons a {
+    display: inline-block;
+}
+
 
 /* Animation légère */
 @keyframes fadeSlide {

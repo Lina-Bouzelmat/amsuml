@@ -3,15 +3,16 @@
 namespace app\models;
 
 use yii\base\Model;
+use yii\db\ActiveRecord;
 
 /**
- * SearchForm is the model behind the search form.
+ * SearchForm modele du formulaire de recherche.
  */
 class SearchForm extends Model
 {
     public $depart;
     public $arrivee;
-    public $date; // Ajout d'un champ date pour une recherche plus réaliste
+    public $nbPersonnes;
 
     /**
      * @return array the validation rules.
@@ -21,7 +22,7 @@ class SearchForm extends Model
         return [
             [['depart', 'arrivee'], 'required'],
             [['depart', 'arrivee'], 'string', 'max' => 255],
-            [['date'], 'date', 'format' => 'yyyy-MM-dd'],
+            [['nbPersonnes'], 'integer', 'min' => 1],
         ];
     }
 
@@ -33,7 +34,7 @@ class SearchForm extends Model
         return [
             'depart' => 'Ville de départ',
             'arrivee' => 'Ville d\'arrivée',
-            'date' => 'Date du voyage',
+            'nbPersonnes' => 'Nombre de personnes',
         ];
     }
 }

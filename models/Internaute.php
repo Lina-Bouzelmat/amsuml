@@ -7,7 +7,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "fredouil.internaute".
+ * Modele correspondant à la table "fredouil.internaute".
  *
  * @property int $id
  * @property string|null $pseudo

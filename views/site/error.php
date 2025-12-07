@@ -13,15 +13,15 @@ $this->title = $name;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <div class="alert alert-danger">
+    <div class="alert alert-rose">
         <?= nl2br(Html::encode($message)) ?>
     </div>
 
     <p>
-        The above error occurred while the Web server was processing your request.
+        Une erreur est survenue veuillez recharger la page ou saisir quelque choes de  correcte
     </p>
     <p>
-        Please contact us if you think this is a server error. Thank you.
+        Si l'erreur perciste: nous contacter via la page contact
     </p>
 
 </div>
